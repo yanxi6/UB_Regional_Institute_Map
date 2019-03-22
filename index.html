@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <!-- for mapbox base map -->
+        <script src="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
+        <link
+            href="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css"
+            rel="stylesheet"
+        />
+        <!-- for leaflet api -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+            integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+            crossorigin=""
+        />
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script
+            src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            crossorigin=""
+        ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script scr="reverse.js"></script>
+        <link rel="stylesheet" href="style.css" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="map"><div id="slider"></div></div>
+        <script>
+            $(function() {
+                $("#slider").slider();
+            });
+            accessToken =
+                "pk.eyJ1IjoieWFueGk2IiwiYSI6ImNqdGs4bjhtMTM3eTI0NW8zYnQ4czcwNW8ifQ.Pwxa_wAZ9h-vD-gBVSzA4A";
+            var map = L.map("map").setView([43.08, -79.07], 13);
+            // load a tile layer
+            L.tileLayer(
+                "https://api.tiles.mapbox.com/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+                {
+                    attribution:
+                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: "mapbox.streets",
+                    accessToken: accessToken
+                }
+            ).addTo(map);
+            var myStyle = {
+                color: "#ff7800",
+                weight: 5,
+                opacity: 0.65
+            };
+            $.getJSON("Niagara_Falls_GeoJSON.geojson", function(data) {
+                // add GeoJSON layer to the map once the file is loaded
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        var pov = feature.properties.InNrPov11;
+                        if (0.1 <= pov && pov <= 0.25) {
+                            return {
+                                color: "#f0dbea",
+                                weight: 5,
+                                fillOpacity: 0.5
+                            };
+                        } else if (0.26 <= pov && pov <= 0.5) {
+                            return {
+                                color: "#c78cbe",
+                                weight: 5,
+                                fillOpacity: 0.5
+                            };
+                        } else if (0.51 <= pov && pov <= 0.75) {
+                            return {
+                                color: "#a654a0",
+                                weight: 5,
+                                fillOpacity: 0.5
+                            };
+                        } else if (0.76 <= pov && pov <= 1.0) {
+                            return {
+                                color: "#9a3f98",
+                                weight: 5,
+                                fillOpacity: 0.5
+                            };
+                        } else {
+                            return {
+                                color: "#ffffff",
+                                weight: 5,
+                                fillOpacity: 0.5
+                            };
+                        }
+                    },
+                    coordsToLatLng: function(coord) {
+                        return new L.LatLng(coord[1], coord[0]);
+                    }
+                }).addTo(map);
+            });
+        </script>
+    </body>
+</html>
