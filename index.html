@@ -35,6 +35,7 @@
     </head>
     <body>
         <div class="slider_section">
+            <p>Population in or near poverty, by year</p>
             <div id="slider"></div>
             <div id="slider-range-value"></div>
         </div>
@@ -49,10 +50,27 @@
                 "pk.eyJ1IjoieWFueGk2IiwiYSI6ImNqdGs4bjhtMTM3eTI0NW8zYnQ4czcwNW8ifQ.Pwxa_wAZ9h-vD-gBVSzA4A";
             var map = L.map("map").setView([43.1, -79.01], 13);
 
+            // load a tile layer
+            L.tileLayer(
+                "https://api.tiles.mapbox.com/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+                {
+                    attribution:
+                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: "mapbox.streets",
+                    accessToken: accessToken
+                }
+            ).addTo(map);
+
             noUiSlider.create(slider, {
                 range: {
                     min: [2011],
                     max: [2017]
+                },
+                pips: {
+                    mode: "values",
+                    values: [2011, 2012, 2013, 2014, 2015, 2016, 2017],
+                    density: 15
                 },
                 step: 1,
                 start: [2011]
@@ -92,37 +110,7 @@
                                 break;
                         }
 
-                        if (0.1 <= pov && pov <= 0.25) {
-                            return {
-                                color: "#f0dbea",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.26 <= pov && pov <= 0.5) {
-                            return {
-                                color: "#c78cbe",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.51 <= pov && pov <= 0.75) {
-                            return {
-                                color: "#a654a0",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.76 <= pov && pov <= 1.0) {
-                            return {
-                                color: "#9a3f98",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else {
-                            return {
-                                color: "#ffffff",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        }
+                        return createStyle(pov);
                     },
                     coordsToLatLng: function(coord) {
                         return new L.LatLng(coord[1], coord[0]);
@@ -130,17 +118,39 @@
                 }).addTo(map);
             });
 
-            // load a tile layer
-            L.tileLayer(
-                "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
-                {
-                    attribution:
-                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    maxZoom: 18,
-                    id: "mapbox.streets",
-                    accessToken: accessToken
+            function createStyle(pov) {
+                if (0.1 <= pov && pov <= 0.25) {
+                    return {
+                        color: "#f0dbea",
+                        weight: 5,
+                        fillOpacity: 1
+                    };
+                } else if (0.26 <= pov && pov <= 0.5) {
+                    return {
+                        color: "#c78cbe",
+                        weight: 5,
+                        fillOpacity: 1
+                    };
+                } else if (0.51 <= pov && pov <= 0.75) {
+                    return {
+                        color: "#a654a0",
+                        weight: 5,
+                        fillOpacity: 1
+                    };
+                } else if (0.76 <= pov && pov <= 1.0) {
+                    return {
+                        color: "#9a3f98",
+                        weight: 5,
+                        fillOpacity: 1
+                    };
+                } else {
+                    return {
+                        color: "#ffffff",
+                        weight: 5,
+                        fillOpacity: 1
+                    };
                 }
-            ).addTo(map);
+            }
 
             function getData() {
                 return $.ajax({
@@ -154,37 +164,7 @@
                     style: function(feature) {
                         features.push(feature);
                         var pov = feature.properties.InNrPov11;
-                        if (0.1 <= pov && pov <= 0.25) {
-                            return {
-                                color: "#f0dbea",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.26 <= pov && pov <= 0.5) {
-                            return {
-                                color: "#c78cbe",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.51 <= pov && pov <= 0.75) {
-                            return {
-                                color: "#a654a0",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else if (0.76 <= pov && pov <= 1.0) {
-                            return {
-                                color: "#9a3f98",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        } else {
-                            return {
-                                color: "#ffffff",
-                                weight: 5,
-                                fillOpacity: 1
-                            };
-                        }
+                        return createStyle(pov);
                     },
                     onEachFeature: function(feature, layer) {
                         features.push(feature);
@@ -196,6 +176,49 @@
                 }).addTo(map);
             }
             var cur = getData().done(handleData);
+            function getColor(pov) {
+                if (0.1 <= pov && pov <= 0.25) {
+                    return "#f0dbea";
+                } else if (0.26 <= pov && pov <= 0.5) {
+                    return "#c78cbe";
+                } else if (0.51 <= pov && pov <= 0.75) {
+                    return "#a654a0";
+                } else if (0.76 <= pov && pov <= 1.0) {
+                    return "#9a3f98";
+                } else {
+                    return "#ffffff";
+                }
+            }
+            var legend = L.control({ position: "bottomleft" });
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create("div", "info legend"),
+                    grades = [0.1, 0.25, 0.5, 0.75],
+                    percentage = [
+                        "10%",
+                        "25%",
+                        "26%",
+                        "50%",
+                        "51",
+                        "75%",
+                        "76%",
+                        "100%"
+                    ];
+                labels = [];
+
+                // loop through our density intervals and generate a label with a colored square for each interval
+                for (var i = 0; i < grades.length; i++) {
+                    div.innerHTML +=
+                        '<i style="background:' +
+                        getColor(grades[i]) +
+                        '"></i> ' +
+                        percentage[2 * i] +
+                        ("&ndash;" + percentage[2 * i + 1] + "<br>");
+                }
+                div.innerHTML +=
+                    "<i style='color: black; width: 100px; font-size: 10px;'>Source: lorem ipsum</i>";
+                return div;
+            };
+            legend.addTo(map);
         </script>
     </body>
 </html>
