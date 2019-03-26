@@ -22,7 +22,7 @@ function getColor(pov) {
 
 function getData() {
     return $.ajax({
-        url: "Niagara_Falls_GeoJSON.geojson",
+        url: "GeoJSON/Niagara_Falls_GeoJSON.geojson",
         type: "GET"
     });
 }
