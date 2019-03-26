@@ -35,24 +35,35 @@
         <title>Niagara Falls</title>
     </head>
     <body>
-        <div class="slider_section">
-            <p>Population in or near poverty, by year</p>
-            <div id="slider"></div>
-            <div id="slider-range-value"></div>
+        <div id="map">
+            <div class="slider_section">
+                <p class="bold">
+                    Population in or near poverty, by year
+                </p>
+                <div
+                    id="slider"
+                    onmousedown="mouseDown()"
+                    onmouseup="mouseUp()"
+                ></div>
+                <div id="slider-range-value"></div>
+            </div>
         </div>
-        <div id="map"></div>
         <script>
             var slider = document.getElementById("slider");
-            var layers = [];
-            var features = [];
+            var boundaryPath = "GeoJSON/Niagara_Falls_Boundary_GeoJSON.geojson";
+            var sectionPath =
+                "GeoJSON/Niagara_Falls_Section_Boundary_GeoJSON.geojson";
+            var polygon = "GeoJSON/Niagara_Falls_GeoJSON.geojson";
+            var boundary;
+            var section;
 
             accessToken =
                 "pk.eyJ1IjoieWFueGk2IiwiYSI6ImNqdGs4bjhtMTM3eTI0NW8zYnQ4czcwNW8ifQ.Pwxa_wAZ9h-vD-gBVSzA4A";
-            var map = L.map("map").setView([43.1, -79.01], 13);
+            var map = L.map("map").setView([43.11, -79.01], 13);
 
             // load a tile layer
             L.tileLayer(
-                "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+                "https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}?access_token={accessToken}",
                 {
                     attribution:
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -83,24 +94,62 @@
                 layers.forEach(function(ele) {
                     ele.remove();
                 });
-                L.geoJSON(features, {
+                L.geoJSON(polyFeatures, {
                     style: function(feature) {
                         var pov = getPovAttribute(feature, values[handle]);
                         return createStyle(pov);
-                    },
-                    coordsToLatLng: function(coord) {
-                        return new L.LatLng(coord[1], coord[0]);
                     }
+                }).addTo(map);
+                L.geoJSON(secFeatures, {
+                    style: myStyle
+                }).addTo(map);
+                L.geoJSON(boundFeatures, {
+                    style: myStyle2
                 }).addTo(map);
             });
 
-            getData().done(handleData);
+            var touch = document.getElementsByClassName("noUi-touch-area");
+            touch[0].onmousedown = function() {
+                map.dragging.disable();
+            };
+            touch[0].onmouseup = function() {
+                map.dragging.enable();
+            };
+
+            getData(polygon).always(handlePolygonData);
+            getData(sectionPath).always(handlePolylineData);
+
+            //  getData(boundaryPath).always(handleBoundData);
+
+            // $(document).ready(function() {
+            //     L.geoJSON(polyFeatures, {
+            //         style: function(feature) {
+            //             var pov = getPovAttribute(feature, "2011.00");
+            //             return createStyle(pov);
+            //         }
+            //     }).addTo(map);
+            //     L.geoJSON(secFeatures, {
+            //         style: myStyle
+            //     }).addTo(map);
+            //     L.geoJSON(boundFeatures, {
+            //         style: myStyle2
+            //     }).addTo(map);
+            // });
 
             var legend = L.control({ position: "bottomleft" });
             legend.onAdd = function(map) {
                 return createLegend(map);
             };
             legend.addTo(map);
+
+            var text = L.control({ position: "topleft" });
+            text.onAdd = function(map) {
+                var div = L.DomUtil.create("div", "info text");
+                div.innerHTML =
+                    "Altogether, 44% of the population is either in poverty or close to it. The neighborhoods of Hyde Park, Downtown Niagara Falls and Highland are the hardest hit.";
+                return div;
+            };
+            text.addTo(map);
         </script>
     </body>
 </html>

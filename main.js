@@ -1,3 +1,25 @@
+var layers = [];
+var polyFeatures = [];
+var secFeatures = [];
+var boundFeatures = [];
+
+var myStyle = {
+    color: "#ffffff",
+    weight: 3
+};
+
+var myStyle2 = {
+    color: "#838789",
+    weight: 3
+};
+
+function mouseDown() {
+    map.dragging.disable();
+}
+function mouseUp() {
+    map.dragging.enable();
+}
+
 function createStyle(pov) {
     return {
         color: getColor(pov),
@@ -9,37 +31,63 @@ function createStyle(pov) {
 function getColor(pov) {
     if (0.1 <= pov && pov <= 0.25) {
         return "#f0dbea";
-    } else if (0.26 <= pov && pov <= 0.5) {
+    } else if (0.25 < pov && pov <= 0.5) {
         return "#c78cbe";
-    } else if (0.51 <= pov && pov <= 0.75) {
+    } else if (0.5 < pov && pov <= 0.75) {
         return "#a654a0";
-    } else if (0.76 <= pov && pov <= 1.0) {
+    } else if (0.75 < pov && pov <= 1.0) {
         return "#9a3f98";
     } else {
         return "#ffffff";
     }
 }
 
-function getData() {
+function getData(url) {
     return $.ajax({
-        url: "GeoJSON/Niagara_Falls_GeoJSON.geojson",
+        url: url,
         type: "GET"
     });
 }
 
-function handleData(data) {
+function handlePolygonData(data) {
     L.geoJSON(data, {
         style: function(feature) {
-            features.push(feature);
             var pov = feature.properties.InNrPov11;
             return createStyle(pov);
         },
         onEachFeature: function(feature, layer) {
-            features.push(feature);
+            polyFeatures.push(feature);
             layers.push(layer);
         },
         coordsToLatLng: function(coord) {
             return new L.LatLng(coord[1], coord[0]);
+        }
+    }).addTo(map);
+}
+
+function handlePolylineData(data1, data2) {
+    L.geoJSON(data1, {
+        style: myStyle,
+        onEachFeature: function(feature, layer) {
+            secFeatures.push(feature);
+            layers.push(layer);
+        }
+    }).addTo(map);
+    L.geoJSON(data2, {
+        style: myStyle2,
+        onEachFeature: function(feature, layer) {
+            boundFeatures.push(feature);
+            layers.push(layer);
+        }
+    }).addTo(map);
+}
+
+function handleBoundData(data) {
+    L.geoJSON(data, {
+        style: myStyle2,
+        onEachFeature: function(feature, layer) {
+            boundFeatures.push(feature);
+            layers.push(layer);
         }
     }).addTo(map);
 }
