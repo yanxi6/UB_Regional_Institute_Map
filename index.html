@@ -30,6 +30,7 @@
             href="node_modules/nouislider/distribute/nouislider.min.css"
         />
         <script src="node_modules/nouislider/distribute/nouislider.min.js"></script>
+        <script src="main.js"></script>
         <link rel="stylesheet" href="style.css" />
         <title>Document</title>
     </head>
@@ -43,7 +44,6 @@
         <script>
             var slider = document.getElementById("slider");
             var layers = [];
-
             var features = [];
 
             accessToken =
@@ -85,31 +85,7 @@
                 });
                 L.geoJSON(features, {
                     style: function(feature) {
-                        var pov;
-                        switch (values[handle]) {
-                            case "2011.00":
-                                pov = feature.properties.InNrPov11;
-                                break;
-                            case "2012.00":
-                                pov = feature.properties.InNrPov12;
-                                break;
-                            case "2013.00":
-                                pov = feature.properties.InNrPov13;
-                                break;
-                            case "2014.00":
-                                pov = feature.properties.InNrPov14;
-                                break;
-                            case "2015.00":
-                                pov = feature.properties.InNrPov15;
-                                break;
-                            case "2016.00":
-                                pov = feature.properties.InNrPov16;
-                                break;
-                            case "2017.00":
-                                pov = feature.properties.InNrPov17;
-                                break;
-                        }
-
+                        var pov = getPovAttribute(values[handle]);
                         return createStyle(pov);
                     },
                     coordsToLatLng: function(coord) {
@@ -118,77 +94,8 @@
                 }).addTo(map);
             });
 
-            function createStyle(pov) {
-                if (0.1 <= pov && pov <= 0.25) {
-                    return {
-                        color: "#f0dbea",
-                        weight: 5,
-                        fillOpacity: 1
-                    };
-                } else if (0.26 <= pov && pov <= 0.5) {
-                    return {
-                        color: "#c78cbe",
-                        weight: 5,
-                        fillOpacity: 1
-                    };
-                } else if (0.51 <= pov && pov <= 0.75) {
-                    return {
-                        color: "#a654a0",
-                        weight: 5,
-                        fillOpacity: 1
-                    };
-                } else if (0.76 <= pov && pov <= 1.0) {
-                    return {
-                        color: "#9a3f98",
-                        weight: 5,
-                        fillOpacity: 1
-                    };
-                } else {
-                    return {
-                        color: "#ffffff",
-                        weight: 5,
-                        fillOpacity: 1
-                    };
-                }
-            }
+            getData().done(handleData);
 
-            function getData() {
-                return $.ajax({
-                    url: "Niagara_Falls_GeoJSON.geojson",
-                    type: "GET"
-                });
-            }
-
-            function handleData(data) {
-                L.geoJSON(data, {
-                    style: function(feature) {
-                        features.push(feature);
-                        var pov = feature.properties.InNrPov11;
-                        return createStyle(pov);
-                    },
-                    onEachFeature: function(feature, layer) {
-                        features.push(feature);
-                        layers.push(layer);
-                    },
-                    coordsToLatLng: function(coord) {
-                        return new L.LatLng(coord[1], coord[0]);
-                    }
-                }).addTo(map);
-            }
-            var cur = getData().done(handleData);
-            function getColor(pov) {
-                if (0.1 <= pov && pov <= 0.25) {
-                    return "#f0dbea";
-                } else if (0.26 <= pov && pov <= 0.5) {
-                    return "#c78cbe";
-                } else if (0.51 <= pov && pov <= 0.75) {
-                    return "#a654a0";
-                } else if (0.76 <= pov && pov <= 1.0) {
-                    return "#9a3f98";
-                } else {
-                    return "#ffffff";
-                }
-            }
             var legend = L.control({ position: "bottomleft" });
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "info legend"),
