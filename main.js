@@ -44,7 +44,8 @@ function handleData(data) {
     }).addTo(map);
 }
 
-function getPovAttribute(value) {
+function getPovAttribute(feature, value) {
+    var pov = 0;
     switch (value) {
         case "2011.00":
             pov = feature.properties.InNrPov11;
@@ -68,4 +69,25 @@ function getPovAttribute(value) {
             pov = feature.properties.InNrPov17;
             break;
     }
+    return pov;
+}
+
+function createLegend(map) {
+    var div = L.DomUtil.create("div", "info legend"),
+        grades = [0.1, 0.25, 0.5, 0.75],
+        percentage = ["10%", "25%", "26%", "50%", "51", "75%", "76%", "100%"];
+    labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' +
+            getColor(grades[i]) +
+            '"></i> ' +
+            percentage[2 * i] +
+            ("&ndash;" + percentage[2 * i + 1] + "<br>");
+    }
+    div.innerHTML +=
+        "<i style='color: black; width: 100px; font-size: 10px;'>Source: lorem ipsum</i>";
+    return div;
 }

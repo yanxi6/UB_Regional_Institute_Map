@@ -52,7 +52,7 @@
 
             // load a tile layer
             L.tileLayer(
-                "https://api.tiles.mapbox.com/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+                "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
                 {
                     attribution:
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -85,7 +85,7 @@
                 });
                 L.geoJSON(features, {
                     style: function(feature) {
-                        var pov = getPovAttribute(values[handle]);
+                        var pov = getPovAttribute(feature, values[handle]);
                         return createStyle(pov);
                     },
                     coordsToLatLng: function(coord) {
@@ -98,32 +98,7 @@
 
             var legend = L.control({ position: "bottomleft" });
             legend.onAdd = function(map) {
-                var div = L.DomUtil.create("div", "info legend"),
-                    grades = [0.1, 0.25, 0.5, 0.75],
-                    percentage = [
-                        "10%",
-                        "25%",
-                        "26%",
-                        "50%",
-                        "51",
-                        "75%",
-                        "76%",
-                        "100%"
-                    ];
-                labels = [];
-
-                // loop through our density intervals and generate a label with a colored square for each interval
-                for (var i = 0; i < grades.length; i++) {
-                    div.innerHTML +=
-                        '<i style="background:' +
-                        getColor(grades[i]) +
-                        '"></i> ' +
-                        percentage[2 * i] +
-                        ("&ndash;" + percentage[2 * i + 1] + "<br>");
-                }
-                div.innerHTML +=
-                    "<i style='color: black; width: 100px; font-size: 10px;'>Source: lorem ipsum</i>";
-                return div;
+                return createLegend(map);
             };
             legend.addTo(map);
         </script>
