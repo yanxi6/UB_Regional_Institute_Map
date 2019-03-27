@@ -95,3 +95,18 @@ body {
 .leaflet-interactive {
     cursor: grab;
 }
+
+.leaflet-tooltip {
+    white-space: initial;
+}
+
+.my-labels {
+    background-color: transparent;
+    border: transparent;
+    box-shadow: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 12rem;
+    text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
+    text-align: center;
+}

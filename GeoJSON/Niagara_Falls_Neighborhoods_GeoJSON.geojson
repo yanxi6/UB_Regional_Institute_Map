@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "Niagara_Falls_Neighborhoods_GeoJSON",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Neighborhd": "DeVeaux", "ORIG_FID": 0 }, "geometry": { "type": "Point", "coordinates": [ -79.05405, 43.12231 ] } },
+{ "type": "Feature", "properties": { "Neighborhd": "Highland", "ORIG_FID": 1 }, "geometry": { "type": "Point", "coordinates": [ -79.04211, 43.11627 ] } },
+{ "type": "Feature", "properties": { "Neighborhd": "Hyde Park", "ORIG_FID": 2 }, "geometry": { "type": "Point", "coordinates": [ -79.01332, 43.10571 ] } },
+{ "type": "Feature", "properties": { "Neighborhd": "LaSalle", "ORIG_FID": 3 }, "geometry": { "type": "Point", "coordinates": [ -78.97658, 43.08392 ] } },
+{ "type": "Feature", "properties": { "Neighborhd": "Downtown Core\nCity", "ORIG_FID": 4 }, "geometry": { "type": "Point", "coordinates": [ -79.05407, 43.08646 ] } }
+]
+}

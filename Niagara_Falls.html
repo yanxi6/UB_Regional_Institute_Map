@@ -37,9 +37,9 @@
     <body>
         <div id="map">
             <div class="text">
-                "Altogether, 44% of the population is either in poverty or close
+                Altogether, 44% of the population is either in poverty or close
                 to it. The neighborhoods of Hyde Park, Downtown Niagara Falls
-                and Highland are the hardest hit.";
+                and Highland are the hardest hit.
             </div>
             <div class="slider_section">
                 <p class="bold">
@@ -59,8 +59,10 @@
             var sectionPath =
                 "GeoJSON/Niagara_Falls_Section_Boundary_GeoJSON.geojson";
             var polygon = "GeoJSON/Niagara_Falls_GeoJSON.geojson";
-            var boundary;
-            var section;
+            var neiPath = "GeoJSON/Niagara_Falls_Neighborhoods_GeoJSON.geojson";
+            var polyLayer = {};
+            var secLayer = {};
+            var boundLayer = {};
 
             accessToken =
                 "pk.eyJ1IjoieWFueGk2IiwiYSI6ImNqdGs4bjhtMTM3eTI0NW8zYnQ4czcwNW8ifQ.Pwxa_wAZ9h-vD-gBVSzA4A";
@@ -100,22 +102,23 @@
                 "slider-range-value"
             );
 
-            slider.noUiSlider.on("update", function(values, handle) {
+            slider.noUiSlider.on("change", function(values, handle) {
                 layers.forEach(function(ele) {
                     ele.remove();
                 });
-                L.geoJSON(polyFeatures, {
-                    style: function(feature) {
-                        var pov = getPovAttribute(feature, values[handle]);
-                        return createStyle(pov);
-                    }
-                }).addTo(map);
-                L.geoJSON(secFeatures, {
-                    style: myStyle
-                }).addTo(map);
-                L.geoJSON(boundFeatures, {
-                    style: myStyle2
-                }).addTo(map);
+
+                // L.geoJSON(polyFeatures, {
+                //     style: function(feature) {
+                //         var pov = getPovAttribute(feature, values[handle]);
+                //         return createStyle(pov);
+                //     }
+                // }).addTo(map);
+                // L.geoJSON(secFeatures, {
+                //     style: myStyle
+                // }).addTo(map);
+                // L.geoJSON(boundFeatures, {
+                //     style: myStyle2
+                // }).addTo(map);
             });
 
             var touch = document.getElementsByClassName("noUi-touch-area");
@@ -126,25 +129,23 @@
                 map.dragging.enable();
             };
 
-            getData(polygon).always(handlePolygonData);
-            getData(sectionPath).always(handlePolylineData);
+            $(document).ready(function() {
+                getData(polygon, 1);
+                getData(sectionPath, 2);
+                getData(boundaryPath, 3);
+                getData(neiPath, 4);
+            });
+            $(document).ajaxSuccess(function() {
+                polyLayer = handlePolygonData(polyFeatures);
+                secLayer = handlePolylineData(secFeatures);
+                boundLayer = handleBoundData(boundFeatures);
+                neiLayer = handleNeiData(neiFeatures);
 
-            //  getData(boundaryPath).always(handleBoundData);
-
-            // $(document).ready(function() {
-            //     L.geoJSON(polyFeatures, {
-            //         style: function(feature) {
-            //             var pov = getPovAttribute(feature, "2011.00");
-            //             return createStyle(pov);
-            //         }
-            //     }).addTo(map);
-            //     L.geoJSON(secFeatures, {
-            //         style: myStyle
-            //     }).addTo(map);
-            //     L.geoJSON(boundFeatures, {
-            //         style: myStyle2
-            //     }).addTo(map);
-            // });
+                polyLayer.addTo(map);
+                secLayer.addTo(map);
+                boundLayer.addTo(map);
+                neiLayer.addTo(map);
+            });
 
             var legend = L.control({ position: "bottomleft" });
             legend.onAdd = function(map) {

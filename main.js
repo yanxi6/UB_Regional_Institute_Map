@@ -2,6 +2,7 @@ var layers = [];
 var polyFeatures = [];
 var secFeatures = [];
 var boundFeatures = [];
+var neiFeatures = [];
 
 var myStyle = {
     color: "#ffffff",
@@ -42,47 +43,63 @@ function getColor(pov) {
     }
 }
 
-function getData(url) {
-    return $.ajax({
-        url: url,
-        type: "GET"
+function getData(url, type) {
+    $.getJSON(url, function(result) {
+        if (type == 1) polyFeatures = result;
+        if (type == 2) secFeatures = result;
+        if (type == 3) boundFeatures = result;
+        if (type == 4) neiFeatures = result;
     });
 }
 
 function handlePolygonData(data) {
-    L.geoJSON(data, {
+    return L.geoJSON(data, {
         style: function(feature) {
             var pov = feature.properties.InNrPov11;
             return createStyle(pov);
         },
         onEachFeature: function(feature, layer) {
-            polyFeatures.push(feature);
+            // polyFeatures.push(feature);
             layers.push(layer);
         },
         coordsToLatLng: function(coord) {
             return new L.LatLng(coord[1], coord[0]);
         }
-    }).addTo(map);
+    });
 }
 
-function handlePolylineData(data1, data2) {
-    L.geoJSON(data1, {
+function handlePolylineData(data) {
+    return L.geoJSON(data, {
         style: myStyle,
         onEachFeature: function(feature, layer) {
-            secFeatures.push(feature);
             layers.push(layer);
         }
-    }).addTo(map);
+    });
 }
 
 function handleBoundData(data) {
-    L.geoJSON(data, {
+    return L.geoJSON(data, {
         style: myStyle2,
         onEachFeature: function(feature, layer) {
-            boundFeatures.push(feature);
+            // boundFeatures.push(feature);
             layers.push(layer);
         }
-    }).addTo(map);
+    });
+}
+
+function handleNeiData(data) {
+    return L.geoJSON(data, {
+        pointToLayer: function(feature, latlng) {
+            label = String(feature.properties.Neighborhd); // Must convert to string, .bindTooltip can't use straight 'feature.properties.attribute'
+            return new L.circleMarker(latlng, { radius: 0, weight: 0 })
+                .bindTooltip(label, {
+                    permanent: true,
+                    direction: "center",
+                    className: "my-labels"
+                })
+                .openTooltip();
+        }
+    });
 }
 
 function getPovAttribute(feature, value) {
