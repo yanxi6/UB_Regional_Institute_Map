@@ -73,13 +73,6 @@ function handlePolylineData(data1, data2) {
             layers.push(layer);
         }
     }).addTo(map);
-    L.geoJSON(data2, {
-        style: myStyle2,
-        onEachFeature: function(feature, layer) {
-            boundFeatures.push(feature);
-            layers.push(layer);
-        }
-    }).addTo(map);
 }
 
 function handleBoundData(data) {

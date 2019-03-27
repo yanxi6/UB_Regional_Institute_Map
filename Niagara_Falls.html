@@ -36,6 +36,11 @@
     </head>
     <body>
         <div id="map">
+            <div class="text">
+                "Altogether, 44% of the population is either in poverty or close
+                to it. The neighborhoods of Hyde Park, Downtown Niagara Falls
+                and Highland are the hardest hit.";
+            </div>
             <div class="slider_section">
                 <p class="bold">
                     Population in or near poverty, by year
@@ -63,15 +68,20 @@
 
             // load a tile layer
             L.tileLayer(
-                "https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}?access_token={accessToken}",
+                "https://api.mapbox.com/styles/v1/mombrea/cjtqasmp05arg1ftne8v4xhtq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibW9tYnJlYSIsImEiOiJjanRxYWh2Y24wZGVzNGJtc215d3FjMDQwIn0.Vbh6MGp-LWhoabxUYu_NVg",
                 {
-                    attribution:
-                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 18,
                     id: "mapbox.streets",
                     accessToken: accessToken
                 }
             ).addTo(map);
+            // const map = new mapboxgl.Map({
+            //     container: "map",
+            //     style:
+            //         "https://api.mapbox.com/styles/v1/mombrea/cjtqasmp05arg1ftne8v4xhtq/wmts?access_token=pk.eyJ1IjoibW9tYnJlYSIsImEiOiJjanRxYWh2Y24wZGVzNGJtc215d3FjMDQwIn0.Vbh6MGp-LWhoabxUYu_NVg",
+            //     center: [-78.831939, 42.904409],
+            //     zoom: 13.0
+            // });
 
             noUiSlider.create(slider, {
                 range: {
@@ -84,7 +94,7 @@
                     density: 15
                 },
                 step: 1,
-                start: [2011]
+                start: [2017]
             });
             var rangeSliderValueElement = document.getElementById(
                 "slider-range-value"
@@ -142,14 +152,20 @@
             };
             legend.addTo(map);
 
-            var text = L.control({ position: "topleft" });
-            text.onAdd = function(map) {
-                var div = L.DomUtil.create("div", "info text");
-                div.innerHTML =
-                    "Altogether, 44% of the population is either in poverty or close to it. The neighborhoods of Hyde Park, Downtown Niagara Falls and Highland are the hardest hit.";
-                return div;
-            };
-            text.addTo(map);
+            // var text = L.control({ position: "topleft" });
+            // text.onAdd = function(map) {
+            //     var div = L.DomUtil.create("div", "info text");
+            //     div.innerHTML =
+            //         "Altogether, 44% of the population is either in poverty or close to it. The neighborhoods of Hyde Park, Downtown Niagara Falls and Highland are the hardest hit.";
+            //     return div;
+            // };
+            // text.addTo(map);
+            // var divIcon = L.divIcon({
+            //     html: "DeVeaux"
+            // });
+            // L.marker(new L.LatLng(43.116357, -79.047161), {
+            //     icon: "DeVeaux"
+            // }).addTo(map);
         </script>
     </body>
 </html>

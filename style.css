@@ -16,17 +16,50 @@ body {
     z-index: 1000;
 }
 
+.noUi-target {
+    background: #bbbbb4;
+    border-radius: none;
+    box-shadow: none;
+    border: none;
+}
+
 .noUi-marker {
-    top: 0px;
+    top: -10px;
     background: black;
 }
 
 .noUi-value {
     color: black;
+    font-weight: bold;
+    font-size: 15px;
+    font-style: italic;
 }
 
-.legend,
-.text {
+.noUi-horizontal {
+    height: 0.3rem;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 25px;
+    height: 25px;
+    left: -10px;
+    top: -10px;
+}
+.noUi-value-horizontal {
+    transform: translate(-50%, 10%);
+}
+
+.noUi-handle:after,
+.noUi-handle:before {
+    content: none;
+}
+
+.noUi-touch-area {
+    background: black;
+    border: 2.5px solid white;
+}
+
+.legend {
     padding-left: 5vw;
 }
 
@@ -44,13 +77,21 @@ body {
 }
 
 .text {
+    position: absolute;
+    left: 5vw;
+    top: 5vh;
     font-size: 1.5vw;
     width: 30vh;
-    line-height: 1.5rem;
-    font-weight: bold;
+    line-height: 1.7rem;
+    font-weight: 800;
+    z-index: 1000;
 }
 
 .bold {
     font-weight: bold;
     font-size: 1rem;
+}
+
+.leaflet-interactive {
+    cursor: grab;
 }
