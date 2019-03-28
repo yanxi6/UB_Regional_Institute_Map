@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
         <!-- import mapbox base map -->
         <script src="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
         <link
@@ -30,8 +31,13 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/13.1.4/nouislider.min.css"
         />
+        <link
+            href="https://fonts.googleapis.com/css?family=Roboto"
+            rel="stylesheet"
+        />
         <script src="main.js"></script>
         <link rel="stylesheet" href="style.css" />
+
         <title>Niagara Falls</title>
     </head>
     <body>
@@ -116,21 +122,21 @@
                     onEachFeature: function(feature, layer) {
                         // polyFeatures.push(feature);
                         layers.push(layer);
-                    },
+                    }
                 }).addTo(map);
                 L.geoJSON(secFeatures, {
                     style: myStyle,
                     onEachFeature: function(feature, layer) {
                         // polyFeatures.push(feature);
                         layers.push(layer);
-                    },
+                    }
                 }).addTo(map);
                 L.geoJSON(boundFeatures, {
                     style: myStyle2,
                     onEachFeature: function(feature, layer) {
                         // polyFeatures.push(feature);
                         layers.push(layer);
-                    },
+                    }
                 }).addTo(map);
             });
 

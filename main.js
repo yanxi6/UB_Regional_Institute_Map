@@ -30,7 +30,7 @@ function createStyle(pov) {
 }
 
 function getColor(pov) {
-    if (0.1 <= pov && pov <= 0.25) {
+    if (0 <= pov && pov <= 0.25) {
         return "#f0dbea";
     } else if (0.25 < pov && pov <= 0.5) {
         return "#c78cbe";
@@ -132,7 +132,7 @@ function getPovAttribute(feature, value) {
 
 function createLegend(map) {
     var div = L.DomUtil.create("ul", "info legend"),
-        grades = [0.1, 0.25, 0.5, 0.75],
+        grades = [0.1, 0.26, 0.51, 0.76],
         percentage = ["10%", "25%", "26%", "50%", "51%", "75%", "76%", "100%"];
     labels = [];
 
@@ -145,8 +145,8 @@ function createLegend(map) {
             percentage[2 * i] +
             ("&ndash;" + percentage[2 * i + 1] + "</li>");
     }
-    
+
     div.innerHTML +=
-        "<i style='color: black; width: 100px; font-size: 10px;'>Source: lorem ipsum</i>";
+        "<p style='color: black; font-size: 10px;'>Source: US Census, American Community Survey, 5-year estimates</p>";
     return div;
 }

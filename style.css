@@ -2,6 +2,11 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.leaflet-container {
+    font: 12px/1.5 "Roboto", sans-serif;
+}
+
 #map {
     position: relative;
     height: 100vh;
@@ -70,12 +75,19 @@ body {
     font-weight: bold;
     list-style-type: none;
 }
+
 .legend i {
     width: 18px;
     height: 18px;
     float: left;
     margin-right: 10px;
-    margin-top:7px;
+    margin-top: 7px;
+}
+
+.legend p {
+    line-height: 1rem;
+    width: 50%;
+    margin-top: 0px;
 }
 
 .text {
@@ -103,8 +115,9 @@ body {
 }
 
 .my-labels {
+    color: rgba(0, 0, 0, 0.9);
     background-color: transparent;
-    border: transparent;
+    border: none;
     box-shadow: none;
     font-size: 1.5rem;
     font-weight: bold;
