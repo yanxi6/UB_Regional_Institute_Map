@@ -55,7 +55,7 @@ function getData(url, type) {
 function handlePolygonData(data) {
     return L.geoJSON(data, {
         style: function(feature) {
-            var pov = feature.properties.InNrPov11;
+            var pov = feature.properties.InNrPov17;
             return createStyle(pov);
         },
         onEachFeature: function(feature, layer) {

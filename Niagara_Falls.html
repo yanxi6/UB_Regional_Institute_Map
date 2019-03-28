@@ -102,23 +102,36 @@
                 "slider-range-value"
             );
 
-            slider.noUiSlider.on("change", function(values, handle) {
+            slider.noUiSlider.on("update", function(values, handle) {
                 layers.forEach(function(ele) {
                     ele.remove();
                 });
+                layers = [];
 
-                // L.geoJSON(polyFeatures, {
-                //     style: function(feature) {
-                //         var pov = getPovAttribute(feature, values[handle]);
-                //         return createStyle(pov);
-                //     }
-                // }).addTo(map);
-                // L.geoJSON(secFeatures, {
-                //     style: myStyle
-                // }).addTo(map);
-                // L.geoJSON(boundFeatures, {
-                //     style: myStyle2
-                // }).addTo(map);
+                L.geoJSON(polyFeatures, {
+                    style: function(feature) {
+                        var pov = getPovAttribute(feature, values[handle]);
+                        return createStyle(pov);
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // polyFeatures.push(feature);
+                        layers.push(layer);
+                    },
+                }).addTo(map);
+                L.geoJSON(secFeatures, {
+                    style: myStyle,
+                    onEachFeature: function(feature, layer) {
+                        // polyFeatures.push(feature);
+                        layers.push(layer);
+                    },
+                }).addTo(map);
+                L.geoJSON(boundFeatures, {
+                    style: myStyle2,
+                    onEachFeature: function(feature, layer) {
+                        // polyFeatures.push(feature);
+                        layers.push(layer);
+                    },
+                }).addTo(map);
             });
 
             var touch = document.getElementsByClassName("noUi-touch-area");
