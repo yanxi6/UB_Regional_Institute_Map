@@ -125,4 +125,8 @@ body {
     .slider_section {
     width: calc(100% - 75px);
     }
+
+    .legend {
+        margin-bottom:25px;
+    }
 }
