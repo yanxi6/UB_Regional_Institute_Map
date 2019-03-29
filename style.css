@@ -7,6 +7,11 @@ body {
     font: 12px/1.5 "Roboto", sans-serif;
 }
 
+h5 {
+    padding: 0;
+    margin: 0;
+}
+
 #map {
     position: relative;
     height: 100vh;
@@ -16,9 +21,11 @@ body {
 .slider_section {
     position: absolute;
     right: 10vw;
-    padding-left: 10vw;
-    width: 45%;
+    padding: 8vh 5vw;
+    padding-top: 2vh;
+    width: 40%;
     z-index: 1000;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .noUi-target {
@@ -65,15 +72,12 @@ body {
 }
 
 .legend {
-    padding-left: 5vw;
-}
-
-.legend {
     line-height: 2rem;
     color: #000;
     font-size: 1.75em;
     font-weight: bold;
     list-style-type: none;
+    background: white;
 }
 
 .legend i {
@@ -92,13 +96,13 @@ body {
 
 .text {
     position: absolute;
-    left: 5vw;
-    top: 5vh;
+    left: 3vw;
     font-size: 2em;
     width: 30%;
     line-height: 1.7em;
     font-weight: 800;
     z-index: 1000;
+    background: rgba(221, 221, 210, 0.8);
 }
 
 .bold {
@@ -131,15 +135,15 @@ body {
         font-size: 1em;
         width: calc(100% - 75px);
         top: 150px;
-        background-color: rgba(255,255,255,0.8);
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
     }
 
     .slider_section {
-    width: calc(100% - 75px);
+        width: calc(100% - 75px);
     }
 
     .legend {
-        margin-bottom:25px;
+        margin-bottom: 25px;
     }
 }

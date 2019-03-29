@@ -24,8 +24,8 @@ function mouseUp() {
 function createStyle(pov) {
     return {
         color: getColor(pov),
-        weight: 5,
-        fillOpacity: 1
+        weight: 0.2,
+        fillOpacity: 0.7
     };
 }
 
@@ -38,8 +38,6 @@ function getColor(pov) {
         return "#a654a0";
     } else if (0.75 < pov && pov <= 1.0) {
         return "#9a3f98";
-    } else {
-        return "#ffffff";
     }
 }
 
@@ -133,8 +131,9 @@ function getPovAttribute(feature, value) {
 function createLegend(map) {
     var div = L.DomUtil.create("ul", "info legend"),
         grades = [0.1, 0.26, 0.51, 0.76],
-        percentage = ["10%", "25%", "26%", "50%", "51%", "75%", "76%", "100%"];
+        percentage = ["0%", "25%", "25%", "50%", "50%", "75%", "75%", "100%"];
     labels = [];
+    div.innerHTML += "<h5>Population In or Near porverty</h5>";
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
