@@ -3,6 +3,10 @@ var polyFeatures = [];
 var secFeatures = [];
 var boundFeatures = [];
 var neiFeatures = [];
+var roadFeatures = [];
+var stateRoute = {};
+var interState = {};
+var USRoute = {};
 
 var myStyle = {
     color: "#ffffff",
@@ -47,7 +51,20 @@ function getData(url, type) {
         if (type == 2) secFeatures = result;
         if (type == 3) boundFeatures = result;
         if (type == 4) neiFeatures = result;
+        if (type == 5) roadFeatures = result;
     });
+}
+
+function getSVG(url, type) {
+    $.get(
+        url,
+        function(svg) {
+            if (type == 1) stateRoute = svg;
+            if (type == 2) interState = svg;
+            if (type == 3) USRoute = svg;
+        },
+        "text"
+    );
 }
 
 function handlePolygonData(data) {
@@ -57,7 +74,6 @@ function handlePolygonData(data) {
             return createStyle(pov);
         },
         onEachFeature: function(feature, layer) {
-            // polyFeatures.push(feature);
             layers.push(layer);
         },
         coordsToLatLng: function(coord) {
@@ -66,21 +82,70 @@ function handlePolygonData(data) {
     });
 }
 
-function handlePolylineData(data) {
+function handlePolylineData(data, style) {
     return L.geoJSON(data, {
-        style: myStyle,
+        style: style,
         onEachFeature: function(feature, layer) {
             layers.push(layer);
         }
     });
 }
 
-function handleBoundData(data) {
+function handleRoadData(data, style) {
     return L.geoJSON(data, {
-        style: myStyle2,
+        style: style,
         onEachFeature: function(feature, layer) {
-            // boundFeatures.push(feature);
-            layers.push(layer);
+            var box = layer.getBounds();
+            var coorArr = feature.geometry.coordinates;
+            var len = coorArr.length;
+            var total = 0;
+            var coor = [];
+            for (var i = 0; i < len; i++) {
+                total += coorArr[i].length;
+            }
+            total = parseInt(total / 2);
+            for (var i = 0; i < len; i++) {
+                var tmpLen = coorArr[i].length;
+                if (total > tmpLen) {
+                    total -= tmpLen;
+                } else {
+                    coor = {
+                        lat: coorArr[i][tmpLen - total][1],
+                        lng: coorArr[i][tmpLen - total][0]
+                    };
+                    break;
+                }
+            }
+
+            if (feature.properties.SymbolType === "Street Name") {
+                L.marker(coor, { icon: new L.icon({ iconUrl: "null" }) })
+                    .bindTooltip(feature.properties.NameLabel, {
+                        permanent: true,
+                        direction: "center",
+                        className: "road-labels"
+                    })
+                    .addTo(map);
+            } else {
+                var routeUrl = "data:image/svg+xml;base64,";
+
+                if (feature.properties.SymbolType === "State Route") {
+                    routeUrl += btoa(stateRoute);
+                } else if (feature.properties.SymbolType === "Interstate") {
+                    routeUrl += btoa(interState);
+                } else if (feature.properties.SymbolType === "US Route") {
+                    routeUrl += btoa(USRoute);
+                }
+
+                var routeIcon = L.icon({
+                    iconUrl: routeUrl,
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 18],
+                    popupAnchor: [0, -18],
+                    labelAnchor: [14, 0] // as I want the label to appear 2px past the icon (18 + 2 - 6)
+                });
+                label = String(feature.properties.NameLabel);
+                L.marker(coor, { icon: routeIcon }).addTo(map);
+            }
         }
     });
 }

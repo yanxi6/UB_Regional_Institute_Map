@@ -118,6 +118,13 @@ h5 {
     white-space: initial;
 }
 
+.road-labels {
+    color: rgba(0, 0, 0, 0.9);
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
 .my-labels {
     color: rgba(0, 0, 0, 0.9);
     background-color: transparent;

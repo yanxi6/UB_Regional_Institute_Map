@@ -67,6 +67,10 @@
                 "GeoJSON/Niagara_Falls_Section_Boundary_GeoJSON.geojson";
             var polygon = "GeoJSON/Niagara_Falls_GeoJSON.geojson";
             var neiPath = "GeoJSON/Niagara_Falls_Neighborhoods_GeoJSON.geojson";
+            var roadPath = "GeoJSON/BfloNiag_MajorRds_MSN_all_GeoJSON.geojson";
+            var statePath = "imgs/state-route.svg";
+            var interstatePath = "imgs/interstate.svg";
+            var routePath = "imgs/route.svg";
             var polyLayer = {};
             var secLayer = {};
             var boundLayer = {};
@@ -148,18 +152,22 @@
 
             $(document).ready(function() {
                 getData(polygon, 1);
-                getData(sectionPath, 2);
+                // getData(sectionPath, 2);
                 getData(boundaryPath, 3);
                 getData(neiPath, 4);
+                getData(roadPath, 5);
+                getSVG(statePath, 1);
+                getSVG(interstatePath, 2);
+                getSVG(routePath, 3);
             });
-            $(document).ajaxSuccess(function() {
+            $(document).ajaxStop(function() {
                 polyLayer = handlePolygonData(polyFeatures);
-                secLayer = handlePolylineData(secFeatures);
-                boundLayer = handleBoundData(boundFeatures);
+                roadLayer = handleRoadData(roadFeatures, myStyle);
+                boundLayer = handlePolylineData(boundFeatures, myStyle2);
                 neiLayer = handleNeiData(neiFeatures);
 
                 polyLayer.addTo(map);
-                // secLayer.addTo(map);
+                roadLayer.addTo(map);
                 boundLayer.addTo(map);
                 neiLayer.addTo(map);
             });
