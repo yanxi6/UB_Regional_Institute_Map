@@ -123,6 +123,7 @@ h5 {
     background-color: transparent;
     border: none;
     box-shadow: none;
+    white-space: nowrap;
 }
 
 .my-labels {
@@ -135,6 +136,10 @@ h5 {
     width: 12rem;
     text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
     text-align: center;
+}
+
+.small {
+    font-size: 50px;
 }
 
 @media only screen and (max-width: 600px) {

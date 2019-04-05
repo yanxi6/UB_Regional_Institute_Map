@@ -91,6 +91,13 @@ function handlePolylineData(data, style) {
     });
 }
 
+function svgStyle(svgString, textString) {
+    var position = svgString.length - 7;
+    var b = textString;
+    var newS = svgString.substr(0, position) + b + svgString.substr(position);
+    return newS;
+}
+
 function handleRoadData(data, style) {
     return L.geoJSON(data, {
         style: style,
@@ -129,11 +136,27 @@ function handleRoadData(data, style) {
                 var routeUrl = "data:image/svg+xml;base64,";
 
                 if (feature.properties.SymbolType === "State Route") {
-                    routeUrl += btoa(stateRoute);
+                    var textString;
+                    if (feature.properties.NameLabel.length <= 2) {
+                        textString =
+                            "<text x='60' y='100' style='font-size: 90px;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    } else {
+                        textString =
+                            "<text x='50' y='100' style='font-size: 80px;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    }
+                    routeUrl += btoa(svgStyle(stateRoute, textString));
                 } else if (feature.properties.SymbolType === "Interstate") {
-                    routeUrl += btoa(interState);
+                    var textString =
+                        "<text x='65' y='150' style='font-size: 90px; fill: white;'>15</text>";
+                    routeUrl += btoa(svgStyle(interState, textString));
                 } else if (feature.properties.SymbolType === "US Route") {
-                    routeUrl += btoa(USRoute);
+                    var textString =
+                        "<text x='55' y='130' style='font-size: 90px;'>15</text>";
+                    routeUrl += btoa(svgStyle(USRoute, textString));
                 }
 
                 var routeIcon = L.icon({
@@ -144,7 +167,9 @@ function handleRoadData(data, style) {
                     labelAnchor: [14, 0] // as I want the label to appear 2px past the icon (18 + 2 - 6)
                 });
                 label = String(feature.properties.NameLabel);
-                L.marker(coor, { icon: routeIcon }).addTo(map);
+                L.marker(layer.getBounds().getCenter(), {
+                    icon: routeIcon
+                }).addTo(map);
             }
         }
     });
