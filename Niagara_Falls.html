@@ -43,9 +43,12 @@
     <body>
         <div id="map">
             <div class="text">
-                Altogether, 44% of the population is either in poverty or close
-                to it. The neighborhoods of Hyde Park, Downtown Niagara Falls
-                and Highland are the hardest hit.
+                <p>
+                    Altogether, 44% of the population is either in poverty or
+                    close to it. The neighborhoods of Hyde Park, Downtown
+                    Niagara Falls and Highland are the hardest hit.
+                </p>
+                <div class="legend"></div>
             </div>
             <div class="slider_section">
                 <div>
@@ -77,7 +80,7 @@
 
             accessToken =
                 "pk.eyJ1IjoieWFueGk2IiwiYSI6ImNqdGs4bjhtMTM3eTI0NW8zYnQ4czcwNW8ifQ.Pwxa_wAZ9h-vD-gBVSzA4A";
-            var map = L.map("map").setView([43.11, -79.01], 13);
+            var map = L.map("map").setView([43.11, -79.04], 13);
 
             // load a tile layer
             L.tileLayer(
@@ -179,11 +182,14 @@
                 neiLayer.addTo(map);
             });
 
-            var legend = L.control({ position: "bottomleft" });
-            legend.onAdd = function(map) {
-                return createLegend(map);
-            };
-            legend.addTo(map);
+            // var legend = L.control({ position: "bottomleft" });
+            // legend.onAdd = function(map) {
+            //     return createLegend(map);
+            // };
+            // legend.addTo(map);
+
+            var legend = document.getElementsByClassName("legend");
+            legend[0].innerHTML = createLegend(legend);
         </script>
     </body>
 </html>

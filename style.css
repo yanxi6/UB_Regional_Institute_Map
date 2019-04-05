@@ -71,13 +71,31 @@ h5 {
     border: 2.5px solid white;
 }
 
+.text {
+    padding-top: 50px;
+    position: absolute;
+    left: 3vw;
+    font-size: 2em;
+    width: 30%;
+    line-height: 1.7em;
+    font-weight: 800;
+    z-index: 1000;
+    background: rgba(221, 221, 210, 0.8);
+    height: 100vh;
+}
+
+.text p {
+    padding: 0 50px;
+}
+
 .legend {
     line-height: 2rem;
     color: #000;
-    font-size: 1.75em;
+    font-size: 1.5rem;
     font-weight: bold;
     list-style-type: none;
     background: white;
+    padding-left: 50px;
 }
 
 .legend i {
@@ -91,18 +109,7 @@ h5 {
 .legend p {
     line-height: 1rem;
     width: 50%;
-    margin-top: 0px;
-}
-
-.text {
-    position: absolute;
-    left: 3vw;
-    font-size: 2em;
-    width: 30%;
-    line-height: 1.7em;
-    font-weight: 800;
-    z-index: 1000;
-    background: rgba(221, 221, 210, 0.8);
+    padding: 0;
 }
 
 .bold {
@@ -136,10 +143,6 @@ h5 {
     width: 12rem;
     text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
     text-align: center;
-}
-
-.small {
-    font-size: 50px;
 }
 
 @media only screen and (max-width: 600px) {

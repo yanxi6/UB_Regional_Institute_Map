@@ -240,16 +240,16 @@ function getPovAttribute(feature, value) {
     return pov;
 }
 
-function createLegend(map) {
-    var div = L.DomUtil.create("ul", "info legend"),
-        grades = [0.1, 0.26, 0.51, 0.76],
-        percentage = ["0%", "25%", "25%", "50%", "50%", "75%", "75%", "100%"];
-    labels = [];
-    div.innerHTML += "<h5>Population In or Near porverty</h5>";
+function createLegend() {
+    // var div = L.DomUtil.create("ul", "info legend"),
+    var grades = [0.1, 0.26, 0.51, 0.76];
+    var percentage = ["0%", "25%", "25%", "50%", "50%", "75%", "75%", "100%"];
+    // labels = [];
+    var innerHTML = "<h5>Population In or Near porverty</h5>";
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
+        innerHTML +=
             '<li><i style="background:' +
             getColor(grades[i]) +
             '"></i> ' +
@@ -257,7 +257,7 @@ function createLegend(map) {
             ("&ndash;" + percentage[2 * i + 1] + "</li>");
     }
 
-    div.innerHTML +=
+    innerHTML +=
         "<p style='color: black; font-size: 10px;'>Source: US Census, American Community Survey, 5-year estimates</p>";
-    return div;
+    return innerHTML;
 }
