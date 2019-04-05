@@ -21,8 +21,8 @@ h5 {
 .slider_section {
     position: absolute;
     right: 10vw;
-    padding: 8vh 5vw;
-    padding-top: 2vh;
+    padding: 50px 5vw;
+    padding-top: 10px;
     width: 40%;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.8);
@@ -104,6 +104,10 @@ h5 {
     float: left;
     margin-right: 10px;
     margin-top: 7px;
+}
+
+.legend li {
+    font-size: 1rem;
 }
 
 .legend p {
