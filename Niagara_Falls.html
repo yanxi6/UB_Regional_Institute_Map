@@ -140,6 +140,13 @@
                         layers.push(layer);
                     }
                 }).addTo(map);
+                L.geoJSON(roadFeatures, {
+                    style: myStyle,
+                    onEachFeature: function(feature, layer) {
+                        // polyFeatures.push(feature);
+                        layers.push(layer);
+                    }
+                }).addTo(map);
             });
 
             var touch = document.getElementsByClassName("noUi-touch-area");
