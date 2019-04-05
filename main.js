@@ -150,12 +150,34 @@ function handleRoadData(data, style) {
                     }
                     routeUrl += btoa(svgStyle(stateRoute, textString));
                 } else if (feature.properties.SymbolType === "Interstate") {
-                    var textString =
-                        "<text x='65' y='150' style='font-size: 90px; fill: white;'>15</text>";
+                    var textString;
+                    if (feature.properties.NameLabel.length <= 2) {
+                        textString =
+                            "<text x='65' y='150' style='font-size: 90px; fill: white;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    } else {
+                        textString =
+                            "<text x='50' y='150' style='font-size: 90px; fill: white;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    }
+
                     routeUrl += btoa(svgStyle(interState, textString));
                 } else if (feature.properties.SymbolType === "US Route") {
-                    var textString =
-                        "<text x='55' y='130' style='font-size: 90px;'>15</text>";
+                    var textString;
+                    if (feature.properties.NameLabel.length <= 2) {
+                        textString =
+                            "<text x='55' y='130' style='font-size: 90px;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    } else {
+                        textString =
+                            "<text x='50' y='130' style='font-size: 75px;'>" +
+                            feature.properties.NameLabel +
+                            "</text>";
+                    }
+
                     routeUrl += btoa(svgStyle(USRoute, textString));
                 }
 
