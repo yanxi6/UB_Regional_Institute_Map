@@ -150,7 +150,7 @@ h5 {
         font-size: 1em;
         width: calc(100% - 75px);
         top: 150px;
-        background-color: rgba(255, 255, 255, 0.8);
+        background: rgba(221, 221, 210, 0.8);
         padding: 20px;
     }
 
@@ -160,5 +160,9 @@ h5 {
 
     .legend {
         margin-bottom: 25px;
+    }
+
+    .leaflet-control-zoom {
+        display: none;
     }
 }
